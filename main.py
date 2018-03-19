@@ -36,11 +36,10 @@ for one in movie_list:
 
     name = re.findall(('<h1><font color=#07519a>([\S]*)</font></h1>'), content, re.S | re.I)
     # name = re.findall(('www.ygdy8.com.([\S]*).mkv">'), content, re.S | re.I)
-    if len(name)==0:
+    if len(name) == 0:
         print("没找到片名信息")
     else:
         name1 = str(name[0])
         nn = name1[2:-1]
         print("name", name1)  # 此时获得的是正确内容的错误编码的信息
         print("-------------------------")
-
