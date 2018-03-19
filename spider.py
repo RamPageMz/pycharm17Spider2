@@ -12,6 +12,7 @@
 import string
 import urllib.request
 import datetime
+import requests
 
 
 # http://movie.douban.com/
@@ -38,7 +39,7 @@ def get_movie_url():
             count_film += 1
             print(count_film, '\t:\t', url_get)
             movie_list.append(
-                'http://www.dytt8.net/' + url_get[2:-1])  # for there is b' before and ' behind so cut the top and tail
+                'http://www.dytt8.net' + url_get[2:-1])  # for there is b' before and ' behind so cut the top and tail
         else:
             print("invalid!!!  ", url_get)
             continue
@@ -47,13 +48,15 @@ def get_movie_url():
 
     end_time = datetime.datetime.now()
 
-    print("^^^^^ get all url time:", (end_time - start_time).microseconds)
+    print("^^^^^ get all url time:", ((end_time - start_time).microseconds * 1.0) / 1000000)
 
     print("*************")
     print("show movie_list")
     print("*************")
     print(movie_list)
     print(len(movie_list))
+
+    print("***************end function**************")
 
     # for the first and second is a collection of movies so jump them
     return movie_list[2:]
@@ -63,5 +66,10 @@ def get_movie_url():
 
 
 def get_movie_html(url):
-    comment_html = urllib.request.urlopen(url).read()
-    return comment_html
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0'}
+    req = requests.session()  # req = urllib.request.Request(url, headers=headers)
+    req.headers.update(headers)
+    r = req.get(url)
+    # comment_html = urllib.request.urlopen(req).read()
+    # comment_html = str(comment_html, 'gbk')  # 解决编码问题
+    return r.content.decode('gbk', 'ignore')
